@@ -1,6 +1,9 @@
 const WebSocket = require("ws");
+const http = require("http");
 
-const wss = new WebSocket.Server({ port: process.env.PORT || 3000 });
+const server = http.createServer();
+
+const wss = new WebSocket.Server({ server });
 
 let muted = new Set();
 
@@ -36,3 +39,10 @@ function broadcast(msg) {
         }
     });
 }
+
+// 🔥 CRITICAL PART (Railway entry)
+const PORT = process.env.PORT || 8080;
+
+server.listen(PORT, () => {
+    console.log("Server running on", PORT);
+});
